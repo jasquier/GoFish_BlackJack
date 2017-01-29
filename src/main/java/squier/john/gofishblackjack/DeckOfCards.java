@@ -38,6 +38,7 @@ public class DeckOfCards extends ArrayList<Card>
         return dealtCards;
     }
 
+    // needs to be put in a cardcollection super class
     public boolean removeCard(Card cardToRemove)
     {
         for ( Card c : this )
