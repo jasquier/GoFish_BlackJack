@@ -9,18 +9,20 @@ import java.util.ArrayList;
 public class GoFishGame extends CardGame
 {
     private int numberOfPlayers;
-    private int[] numberOfPointsForEachPlayer;
+    private int[] numberOfPointsForPlayer;
     private DeckOfCards theDeck;
     private HandOfCards[] players;
+
+    private GoFishIO io = new GoFishConsoleIO();
 
     public GoFishGame(int desiredNumberOfPlayers)
     {
         setNumberOfPlayers(desiredNumberOfPlayers);
 
-        numberOfPointsForEachPlayer = new int[numberOfPlayers];
-        for ( int i = 0; i < numberOfPointsForEachPlayer.length; i++ )
+        numberOfPointsForPlayer = new int[numberOfPlayers];
+        for ( int i = 0; i < numberOfPointsForPlayer.length; i++ )
         {
-            numberOfPointsForEachPlayer[i] = 0;
+            numberOfPointsForPlayer[i] = 0;
         }
 
         theDeck = new DeckOfCards();
@@ -54,24 +56,39 @@ public class GoFishGame extends CardGame
 
 
 
+        int turnOfPlayer = 0;
+        GoFishTurnInput guess;
 
-        displayGoFishWelcome();
+        io.displayWelcomeInformation();
 
         // loop should start here
+        // while ( deck is not empty AND players still have cards )
 
         // we are player 0
         handleFourOfAKindInHands();
 
-        displayAllHands();
+        io.displayAllHands(players);
 
-        GoFishTurnInput userInput = getConsoleTurnInput();
-        System.out.println("YOU SAY " + userInput.toString());
+        if ( turnOfPlayer == 0 )
+        {
+            // our turn
+            guess = io.getTurnInput(numberOfPlayers);
+        }
+        else
+        {
+            // ai turn
+            guess = generateAIGuess();
+        }
+
+        io.displayAGuess(guess);
+
+        System.out.println("YOU SAY " + input.toString());
 
         // check that player for that card
-        if ( checkPlayerForCard(userInput) ) // player has card of that rank
+        if ( checkPlayerForCard(input) ) // player has card of that rank
         {
-            System.out.println("player " + userInput.getPlayerToQuestion() + " has "
-                    + userInput.getRankToSeeIfPlayerHas().toString() + "s");
+            System.out.println("player " + input.getPlayerToQuestion() + " has "
+                    + input.getRankToSeeIfPlayerHas().toString() + "s");
         }
         else // player has no cards of that rank
         {
@@ -112,25 +129,6 @@ public class GoFishGame extends CardGame
         return;
     }
 
-    private void displayGoFishWelcome()
-    {
-        System.out.println("WELCOME TO THE BEST GO FISH GAME EVER!");
-        System.out.println();
-    }
-
-    private void displayAllHands()
-    {
-        System.out.println("YOUR HAND:");
-        System.out.println(players[0].toString());
-
-        // prints hands for cheating purposes
-        for ( int i = 1; i < players.length; i++ )
-        {
-            System.out.println(players[i].toString());
-            System.out.println();
-        }
-    }
-
     private void handleFourOfAKindInHands()
     {
         // check everyone's hands for 4 of a kind and delete the cards if so and add a pt
@@ -141,23 +139,10 @@ public class GoFishGame extends CardGame
                 if ( players[j].containsFourCardsOfOneRank(CardRank.values()[i]) )
                 {
                     players[j].removeAllCardsOfRank(CardRank.values()[i]);
-                    numberOfPointsForEachPlayer[j]++;
+                    numberOfPointsForPlayer[j]++;
                 }
             }
         }
-    }
-    private GoFishTurnInput getConsoleTurnInput()
-    {
-        System.out.printf("WHAT PLAYER DO YOU WANT TO QUESTION? (pick %d through %d): ",
-                2, numberOfPlayers);
-
-        int playerToQuestion = scanner.nextInt();
-
-        System.out.printf("AND WHAT RANK DO YOU WANT TO SEARCH FOR? (TWO, FOUR, QUEEN, etc...): ");
-        scanner.nextLine();
-        String rankToQuestion = scanner.nextLine();
-
-        return new GoFishTurnInput(playerToQuestion, rankToQuestion);
     }
 
     private boolean checkPlayerForCard(GoFishTurnInput input)
@@ -172,6 +157,13 @@ public class GoFishGame extends CardGame
         }
 
         return false;
+    }
+
+    private GoFishTurnInput generateAIGuess()
+    {
+        // gotta generate a player to pick btw 0 and numPlayers and a rank btw 0 and 12
+        int playerToQuestion = Math.random()
+        return null;
     }
 
     public static void main(String[] args) {
