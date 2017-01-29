@@ -33,7 +33,6 @@ public class HandOfCardsForGoFish extends HandOfCards
             }
         }
 
-        // all suits of the given rank
         this.removeAllCardsOfRank(rank);
 
         return temp;
@@ -52,5 +51,10 @@ public class HandOfCardsForGoFish extends HandOfCards
         {
             return false;
         }
+    }
+
+    public boolean doesHandHaveFourOfTheSameRank()
+    {
+
     }
 }

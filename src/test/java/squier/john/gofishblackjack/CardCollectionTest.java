@@ -79,5 +79,9 @@ public class CardCollectionTest
     public void toStringTest()
     {
         String expected = "TWO OF CLUBS\nTHREE OF CLUBS\nFOUR OF CLUBS\n";
+
+        String actual = cardCollection.toString();
+
+        Assert.assertEquals(expected, actual);
     }
 }
