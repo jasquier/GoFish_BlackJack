@@ -98,6 +98,12 @@ public class HandOfCardsTest
     }
 
     @Test
+    public void containsFourOfAKindFalseTest()
+    {
+        Assert.assertFalse(handOfCards.containsFourCardsOfOneRank(CardRank.ACE));
+    }
+
+    @Test
     public void toStringTest()
     {
         String expected = "TWO OF CLUBS\n"

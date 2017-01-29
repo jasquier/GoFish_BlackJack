@@ -21,28 +21,44 @@ public class DeckOfCards extends ArrayList<Card>
         Collections.shuffle(this);
     }
 
+    public boolean equals(DeckOfCards other)
+    {
+        boolean decksAreEqual = true;
+
+        if ( this.size() != other.size() )
+        {
+            decksAreEqual = false;
+            return decksAreEqual;
+        }
+        else
+        {
+            for ( int i = 0; i < this.size(); i++ )
+            {
+                if ( !this.get(i).equals(other.get(i)) )
+                {
+                    decksAreEqual = false;
+                }
+            }
+        }
+
+        return decksAreEqual;
+    }
+
     public ArrayList<Card> dealCards(int numCardsToDeal)
     {
         ArrayList<Card> dealtCards = new ArrayList<>();
 
-        if ( numCardsToDeal < this.size() )
+        for ( int i = 0; i < numCardsToDeal; i++ )
         {
-            for ( int i = 0; i < numCardsToDeal; i++ )
-            {
-                dealtCards.add(this.get(i));
-            }
+            dealtCards.add(this.get(i));
+        }
 
-            for ( int i = 0; i < numCardsToDeal; i++ )
-            {
-                this.remove(dealtCards.get(i));
-            }
-            return dealtCards;
-        }
-        else
+        for ( int i = 0; i < numCardsToDeal; i++ )
         {
-            // empty array list
-            return dealtCards;
+            this.remove(dealtCards.get(i));
         }
+
+        return dealtCards;
     }
 
     // needs to be put in a cardcollection super class
@@ -56,10 +72,11 @@ public class DeckOfCards extends ArrayList<Card>
                 return true;
             }
         }
+
         return false;
     }
 
-    // needs to be a string builder
+    @Override
     public String toString()
     {
         String theDeck = "";
