@@ -25,17 +25,24 @@ public class DeckOfCards extends ArrayList<Card>
     {
         ArrayList<Card> dealtCards = new ArrayList<>();
 
-        for ( int i = 0; i < numCardsToDeal; i++ )
+        if ( numCardsToDeal < this.size() )
         {
-            dealtCards.add(this.get(i));
-        }
+            for ( int i = 0; i < numCardsToDeal; i++ )
+            {
+                dealtCards.add(this.get(i));
+            }
 
-        for ( int i = 0; i < numCardsToDeal; i++ )
+            for ( int i = 0; i < numCardsToDeal; i++ )
+            {
+                this.remove(dealtCards.get(i));
+            }
+            return dealtCards;
+        }
+        else
         {
-            this.remove(dealtCards.get(i));
+            // empty array list
+            return dealtCards;
         }
-
-        return dealtCards;
     }
 
     // needs to be put in a cardcollection super class

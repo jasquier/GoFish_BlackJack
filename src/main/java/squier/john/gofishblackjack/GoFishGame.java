@@ -1,7 +1,5 @@
 package squier.john.gofishblackjack;
 
-import java.util.ArrayList;
-
 /**
  * @author John A. Squier
  * This class allows the playing of a game of go fish with 2 to 10 players
@@ -9,15 +7,19 @@ import java.util.ArrayList;
 public class GoFishGame extends CardGame
 {
     private int numberOfPlayers;
+    int turnOfPlayer;
     private int[] numberOfPointsForPlayer;
     private DeckOfCards theDeck;
     private HandOfCards[] players;
-
-    private GoFishIO io = new GoFishConsoleIO();
+    private GoFishTurnInput guess;
+    private GoFishAI ai;
+    private GoFishIO io;
 
     public GoFishGame(int desiredNumberOfPlayers)
     {
         setNumberOfPlayers(desiredNumberOfPlayers);
+
+        turnOfPlayer = 0;
 
         numberOfPointsForPlayer = new int[numberOfPlayers];
         for ( int i = 0; i < numberOfPointsForPlayer.length; i++ )
@@ -33,69 +35,81 @@ public class GoFishGame extends CardGame
             players[i] = new HandOfCards();
         }
 
+        ai = new BoGoFishAI(numberOfPlayers);
+        io = new GoFishConsoleIO();
+
         dealAGoFishGame();
     }
 
     @Override
-    public void start()
-    {
-        // cards are dealt before this method starts
-        //
-        // after cards are dealt check everyone's hand for 4 of a kind and if so then stash them and add a pt
-        // player0 goes first, ask for who and what card
-        // check that person for that card
-        // if that person has card/s of that rank
-        //      give them to player0
-        // else GO FISH
-        // other players turns proceed in the same manner
-        // if cpu player picks player zero they must ask us for a card
-        // we can LIE IF WE WANT TO
-        // @@@ add ai to decide if we are lying, can it predict our cards?
-        // cpu player turns proceed until it's our turn again (we are player0)
-        // how the heck does go fish work? do we try to get all four of a card and then lay them down?
-
-
-
-        int turnOfPlayer = 0;
-        GoFishTurnInput guess;
+    public void start() {
 
         io.displayWelcomeInformation();
 
-        // loop should start here
-        // while ( deck is not empty AND players still have cards )
+        while (theDeck.size() > 0 /*|| at least two players have cards */) {
 
-        // we are player 0
-        handleFourOfAKindInHands();
+            handleFourOfAKindInHands();
 
-        io.displayAllHands(players);
+            // for cheaters - swap these two lines commented/uncommmented
+            io.displayAllHands(players, numberOfPointsForPlayer);
+            //io.displayMyHand(players, numberOfPointsForPlayer);
 
-        if ( turnOfPlayer == 0 )
-        {
-            // our turn
-            guess = io.getTurnInput(numberOfPlayers);
+            if ( itsOurTurn() )
+            {
+                guess = io.getUserInput(numberOfPlayers);
+            }
+            else
+            {
+                guess = ai.generateInput();
+            }
+
+            io.displayAGuess(guess, turnOfPlayer);
+
+            String response;
+            boolean playerHasCardThatWasGuessed = checkPlayerForCard(guess);
+
+            if ( itsOurTurn() )
+            {
+                // @@@ move this to ai not io
+                response = io.generateAIResponse(playerHasCardThatWasGuessed, guess,
+                                                turnOfPlayer);
+            }
+            else
+            {
+                if ( guess.getPlayerToQuestion() != 0 ) // ai asking ai
+                {
+                    response = io.generateAIResponse(playerHasCardThatWasGuessed, guess,
+                                                turnOfPlayer);
+                }
+                else // ai asking us
+                {
+                    response = io.getUserResponse();
+                }
+            }
+
+            io.displayResponseToQuestion(response);
+
+            if ( playerHasCardThatWasGuessed )
+            {
+                // player has cards so transfer
+                players[turnOfPlayer].addAll(
+                        players[guess.getPlayerToQuestion()].transferAllCardsOfRank(
+                                guess.getRankToSeeIfPlayerHas()));
+
+                // ensure player has cards after transfer
+                if ( players[guess.getPlayerToQuestion()].size() == 0 )
+                {
+                    players[guess.getPlayerToQuestion()].addAll(theDeck.dealCards(5));
+                }
+            }
+            else
+            {
+                System.out.println("GO FISH!");
+
+                // turnOfPlayer can only hold values 0 -> numberOfPlayers - 1
+                turnOfPlayer = (turnOfPlayer + 1) % numberOfPlayers;
+            }
         }
-        else
-        {
-            // ai turn
-            guess = generateAIGuess();
-        }
-
-        io.displayAGuess(guess);
-
-        System.out.println("YOU SAY " + input.toString());
-
-        // check that player for that card
-        if ( checkPlayerForCard(input) ) // player has card of that rank
-        {
-            System.out.println("player " + input.getPlayerToQuestion() + " has "
-                    + input.getRankToSeeIfPlayerHas().toString() + "s");
-        }
-        else // player has no cards of that rank
-        {
-            // GO FISH!
-        }
-
-
     }
 
     public DeckOfCards getTheDeck() { return theDeck; }
@@ -112,7 +126,7 @@ public class GoFishGame extends CardGame
             numberOfPlayers = 10;
         }
         else
-            {
+        {
             numberOfPlayers = desiredNumberOfPlayers;
         }
     }
@@ -140,6 +154,7 @@ public class GoFishGame extends CardGame
                 {
                     players[j].removeAllCardsOfRank(CardRank.values()[i]);
                     numberOfPointsForPlayer[j]++;
+                    players[j].addAll(theDeck.dealCards(4));
                 }
             }
         }
@@ -147,10 +162,10 @@ public class GoFishGame extends CardGame
 
     private boolean checkPlayerForCard(GoFishTurnInput input)
     {
-        if ( players[input.getPlayerToQuestion() - 1].containsCard(new Card(input.getRankToSeeIfPlayerHas(), CardSuit.CLUB))
-                || players[input.getPlayerToQuestion() - 1].containsCard(new Card(input.getRankToSeeIfPlayerHas(), CardSuit.DIAMOND))
-                || players[input.getPlayerToQuestion() - 1].containsCard(new Card(input.getRankToSeeIfPlayerHas(), CardSuit.HEART))
-                || players[input.getPlayerToQuestion() - 1].containsCard(new Card(input.getRankToSeeIfPlayerHas(), CardSuit.SPADE))
+        if ( players[input.getPlayerToQuestion()].containsCard(new Card(input.getRankToSeeIfPlayerHas(), CardSuit.CLUB))
+                || players[input.getPlayerToQuestion()].containsCard(new Card(input.getRankToSeeIfPlayerHas(), CardSuit.DIAMOND))
+                || players[input.getPlayerToQuestion()].containsCard(new Card(input.getRankToSeeIfPlayerHas(), CardSuit.HEART))
+                || players[input.getPlayerToQuestion()].containsCard(new Card(input.getRankToSeeIfPlayerHas(), CardSuit.SPADE))
                 )
         {
             return true;
@@ -159,28 +174,15 @@ public class GoFishGame extends CardGame
         return false;
     }
 
-    private GoFishTurnInput generateAIGuess()
+    private boolean itsOurTurn()
     {
-        // gotta generate a player to pick btw 0 and numPlayers and a rank btw 0 and 12
-        int playerToQuestion = Math.random()
-        return null;
+        return (turnOfPlayer == 0);
     }
 
     public static void main(String[] args) {
         GoFishGame goFishGame = new GoFishGame(5);
 
         goFishGame.start();
-
-/*        for ( int i = 0; i < goFishGame.players.length; i++ )
-        {
-            System.out.println("PLAYER " + i + " HAND:");
-            System.out.println(goFishGame.players[i].toString());
-            System.out.println();
-        }
-
-        System.out.println("AND THE DECK");
-        System.out.println(goFishGame.theDeck.size());
-        System.out.println(goFishGame.theDeck.toString());*/
     }
 
 

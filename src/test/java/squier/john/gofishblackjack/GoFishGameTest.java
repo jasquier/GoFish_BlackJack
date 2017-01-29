@@ -20,8 +20,8 @@ public class GoFishGameTest
     @Test
     public void checkHandAndDeckSizesWhenThereAreFivePlayers()
     {
-        int expectedHandSize = 7;
-        int expectedDeckSize = 17;
+        int expectedHandSize = 5;
+        int expectedDeckSize = 27;
         int[] expected = { expectedHandSize, expectedDeckSize };
 
         int actualHandSize = goFishGame.getPlayers()[0].size();

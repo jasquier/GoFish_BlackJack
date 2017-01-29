@@ -26,10 +26,10 @@ public class HandOfCardsTest
     @Test
     public void transferAllCardsOfRankFiveTest()
     {
-        String expectedRemainingHand = "2 OF CLUBS\n"
-                                     + "3 OF DIAMONDS\n";
-        String expectedTransferredCards = "5 OF SPADES\n"
-                                        + "5 OF HEARTS\n";
+        String expectedRemainingHand = "TWO OF CLUBS\n"
+                                     + "THREE OF DIAMONDS\n";
+        String expectedTransferredCards = "FIVE OF SPADES\n"
+                                        + "FIVE OF HEARTS\n";
         String[] expected = { expectedRemainingHand, expectedTransferredCards };
 
         String actualTransferredCards = handOfCards.transferAllCardsOfRank(CardRank.FIVE).toString();
@@ -45,9 +45,9 @@ public class HandOfCardsTest
         // exercise
         handOfCards.removeCard(new Card(CardRank.THREE, CardSuit.DIAMOND));
 
-        String expected = "2 OF CLUBS\n"
-                        + "5 OF SPADES\n"
-                        + "5 OF HEARTS\n";
+        String expected = "TWO OF CLUBS\n"
+                        + "FIVE OF SPADES\n"
+                        + "FIVE OF HEARTS\n";
         String actual = handOfCards.toString();
 
         Assert.assertEquals(expected, actual);
@@ -56,8 +56,8 @@ public class HandOfCardsTest
     @Test
     public void removeAllCardsOfRankFiveTest()
     {
-        String expected = "2 OF CLUBS\n"
-                        + "3 OF DIAMONDS\n";
+        String expected = "TWO OF CLUBS\n"
+                        + "THREE OF DIAMONDS\n";
 
         handOfCards.removeAllCardsOfRank(CardRank.FIVE);
 
@@ -100,10 +100,10 @@ public class HandOfCardsTest
     @Test
     public void toStringTest()
     {
-        String expected = "2 OF CLUBS\n"
-                        + "3 OF DIAMONDS\n"
-                        + "5 OF SPADES\n"
-                        + "5 OF HEARTS\n";
+        String expected = "TWO OF CLUBS\n"
+                        + "THREE OF DIAMONDS\n"
+                        + "FIVE OF SPADES\n"
+                        + "FIVE OF HEARTS\n";
         String actual = handOfCards.toString();
         Assert.assertEquals(expected, actual);
     }

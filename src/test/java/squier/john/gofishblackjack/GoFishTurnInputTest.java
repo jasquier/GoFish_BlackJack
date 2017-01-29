@@ -18,9 +18,25 @@ public class GoFishTurnInputTest
     }
 
     @Test
+    public void getPlayerToQuestionTest()
+    {
+        int expected = 2;
+        int actual = goFishTurnInput.getPlayerToQuestion();
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getRankToSeeIfPlayerHasTest()
+    {
+        CardRank expected = CardRank.THREE;
+        CardRank actual = goFishTurnInput.getRankToSeeIfPlayerHas();
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void toStringTest()
     {
-        String expected = "Hey player 2, got any 3's?\n";
+        String expected = "\"Hey player 2, got any THREE's?\"\n";
         String actual = goFishTurnInput.toString();
         Assert.assertEquals(expected, actual);
     }

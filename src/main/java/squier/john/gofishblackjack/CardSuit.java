@@ -10,19 +10,19 @@ public enum CardSuit
 
     public String toString()
     {
-        if ( this.ordinal() == 0 ) // CLUB
+        if ( this.ordinal() == 0 )
         {
             return "CLUBS";
         }
-        else if ( this.ordinal() == 1 ) // DIAMOND
+        else if ( this.ordinal() == 1 )
         {
             return "DIAMONDS";
         }
-        else if ( this.ordinal() == 2 ) // HEART
+        else if ( this.ordinal() == 2 )
         {
             return "HEARTS";
         }
-        else // this.ordinal() == 3 SPADE
+        else // this.ordinal() == 3
         {
             return "SPADES";
         }

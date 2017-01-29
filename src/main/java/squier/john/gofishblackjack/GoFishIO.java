@@ -7,9 +7,21 @@ abstract public class GoFishIO
 {
     abstract void displayWelcomeInformation();
 
-    abstract void displayAllHands(HandOfCards[] players);
+    abstract void displayAllHands(HandOfCards[] players,
+                                  int[] numberOfPointsForPlayer);
 
-    abstract void displayAGuess(GoFishTurnInput guess);
+    abstract void displayMyHand(HandOfCards[] players,
+                                    int[] numberOfPointsForPlayer);
 
-    abstract GoFishTurnInput getTurnInput(int numberOfPlayers);
+    abstract void displayAGuess(GoFishTurnInput guess, int turnOfPlayer);
+
+    abstract void displayResponseToQuestion(String response);
+
+    abstract String generateAIResponse(boolean doesAIHaveCard,
+                                   GoFishTurnInput guess,
+                                       int turnOfPlayer);
+
+    abstract GoFishTurnInput getUserInput(int numberOfPlayers);
+
+    abstract String getUserResponse();
 }
