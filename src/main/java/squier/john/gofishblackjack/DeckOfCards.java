@@ -12,38 +12,13 @@ public class DeckOfCards extends ArrayList<Card>
 {
     public DeckOfCards()
     {
-        cardDeck = new ArrayList<Card>();
+        super();
         fillCardDeckWith52Cards();
-    }
-
-    public String toString()
-    {
-        String theDeck = "";
-
-        for ( int i = 0; i < cardDeck.size(); i++ )
-        {
-            theDeck += cardDeck.get(i).toString() + "\n";
-        }
-
-        return theDeck;
     }
 
     public void shuffleDeck()
     {
-        Collections.shuffle(cardDeck);
-    }
-
-    // do we even need this method? it just wraps arraylist.remove(i)
-    public void removeCardFromDeck(Card cardToRemove)
-    {
-        for ( int i = 0; i < cardDeck.size(); i++ )
-        {
-            if ( cardDeck.get(i).equals(cardToRemove) )
-            {
-                cardDeck.remove(i);
-                break;
-            }
-        }
+        Collections.shuffle(this);
     }
 
     public ArrayList<Card> dealCards(int numCardsToDeal)
@@ -52,14 +27,41 @@ public class DeckOfCards extends ArrayList<Card>
 
         for ( int i = 0; i < numCardsToDeal; i++ )
         {
-            dealtCards.add(cardDeck.get(i));
+            dealtCards.add(this.get(i));
         }
+
         for ( int i = 0; i < numCardsToDeal; i++ )
         {
-            cardDeck.remove(dealtCards.get(i));
+            this.remove(dealtCards.get(i));
         }
 
         return dealtCards;
+    }
+
+    public boolean removeCard(Card cardToRemove)
+    {
+        for ( Card c : this )
+        {
+            if ( c.equals(cardToRemove) ) // uses my equals method in card
+            {
+                this.remove(c);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // needs to be a string builder
+    public String toString()
+    {
+        String theDeck = "";
+
+        for ( int i = 0; i < this.size(); i++ )
+        {
+            theDeck += this.get(i).toString() + "\n";
+        }
+
+        return theDeck;
     }
 
     private void fillCardDeckWith52Cards()
@@ -71,7 +73,7 @@ public class DeckOfCards extends ArrayList<Card>
         {
             for ( int j = 0; j < ranks.length; j++ )
             {
-                cardDeck.add(new Card(ranks[j], suits[i]));
+                this.add(new Card(ranks[j], suits[i]));
             }
         }
     }

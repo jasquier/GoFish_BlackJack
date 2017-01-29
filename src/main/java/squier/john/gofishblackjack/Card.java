@@ -19,6 +19,7 @@ public class Card implements Comparable<Card>
 
     public CardSuit getSuit() { return suit; }
 
+    // add unicode chars for suits
     public String toString()
     {
         return this.getRank().toString()
