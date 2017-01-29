@@ -9,6 +9,7 @@ public enum CardRank
     TWO, THREE, FOUR, FIVE, SIX, SEVEN,
     EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE;
 
+    // make it so 3 prints THREE not "3" and same for other numbers
     public String toString()
     {
         if ( this.ordinal() <= 8 ) // index of TEN
