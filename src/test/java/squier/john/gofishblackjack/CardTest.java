@@ -42,7 +42,7 @@ public class CardTest
     @Test
     public void toStringTwoOfHeartsTest()
     {
-        String expected = "2 OF HEARTS";
+        String expected = "TWO OF HEARTS";
         String actual = twoOfHearts.toString();
         Assert.assertEquals(expected, actual);
     }
@@ -50,7 +50,7 @@ public class CardTest
     @Test
     public void toStringFiveOfDiamondsTest()
     {
-        String expected = "5 OF DIAMONDS";
+        String expected = "FIVE OF DIAMONDS";
         String actual = fiveOfDiamonds.toString();
         Assert.assertEquals(expected, actual);
     }

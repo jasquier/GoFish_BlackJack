@@ -33,7 +33,7 @@ public class CardRankTest
     @Test
     public void twoToStringTest()
     {
-        String expected = "2";
+        String expected = "TWO";
         String actual = two.toString();
         Assert.assertEquals(expected, actual);
     }
@@ -41,56 +41,56 @@ public class CardRankTest
     @Test
     public void threeToStringTest() {
 
-        String expected = "3";
+        String expected = "THREE";
         String actual = three.toString();
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void fourToStringTest() {
-        String expected = "4";
+        String expected = "FOUR";
         String actual = four.toString();
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void fiveToStringTest() {
-        String expected = "5";
+        String expected = "FIVE";
         String actual = five.toString();
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void sixToStringTest() {
-        String expected = "6";
+        String expected = "SIX";
         String actual = six.toString();
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void sevenToStringTest() {
-        String expected = "7";
+        String expected = "SEVEN";
         String actual = seven.toString();
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void eightToStringTest() {
-        String expected = "8";
+        String expected = "EIGHT";
         String actual = eight.toString();
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void nineToStringTest() {
-        String expected = "9";
+        String expected = "NINE";
         String actual = nine.toString();
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void tenToStringTest() {
-        String expected = "10";
+        String expected = "TEN";
         String actual = ten.toString();
         Assert.assertEquals(expected, actual);
     }

@@ -20,6 +20,23 @@ public class HandOfCardsTest
         handOfCards.add(new Card(CardRank.TWO, CardSuit.CLUB));
         handOfCards.add(new Card(CardRank.THREE, CardSuit.DIAMOND));
         handOfCards.add(new Card(CardRank.FIVE, CardSuit.SPADE));
+        handOfCards.add(new Card(CardRank.FIVE, CardSuit.HEART));
+    }
+
+    @Test
+    public void transferAllCardsOfRankFiveTest()
+    {
+        String expectedRemainingHand = "TWO OF CLUBS\n"
+                                     + "THREE OF DIAMONDS\n";
+        String expectedTransferredCards = "FIVE OF SPADES\n"
+                                        + "FIVE OF HEARTS\n";
+        String[] expected = { expectedRemainingHand, expectedTransferredCards };
+
+        String actualTransferredCards = handOfCards.transferAllCardsOfRank(CardRank.FIVE).toString();
+        String actualRemainingHand = handOfCards.toString();
+        String[] actual = { actualRemainingHand, actualTransferredCards };
+
+        Assert.assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -28,8 +45,22 @@ public class HandOfCardsTest
         // exercise
         handOfCards.removeCard(new Card(CardRank.THREE, CardSuit.DIAMOND));
 
-        String expected = "2 OF CLUBS\n"
-                        + "5 OF SPADES\n";
+        String expected = "TWO OF CLUBS\n"
+                        + "FIVE OF SPADES\n"
+                        + "FIVE OF HEARTS\n";
+        String actual = handOfCards.toString();
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void removeAllCardsOfRankFiveTest()
+    {
+        String expected = "TWO OF CLUBS\n"
+                        + "THREE OF DIAMONDS\n";
+
+        handOfCards.removeAllCardsOfRank(CardRank.FIVE);
+
         String actual = handOfCards.toString();
 
         Assert.assertEquals(expected, actual);
@@ -54,11 +85,25 @@ public class HandOfCardsTest
     }
 
     @Test
+    public void containsFourOfAKindTrueTest()
+    {
+        HandOfCards temp = new HandOfCards();
+
+        temp.add(new Card(CardRank.ACE, CardSuit.CLUB));
+        temp.add(new Card(CardRank.ACE, CardSuit.DIAMOND));
+        temp.add(new Card(CardRank.ACE, CardSuit.HEART));
+        temp.add(new Card(CardRank.ACE, CardSuit.SPADE));
+
+        Assert.assertTrue(temp.containsFourCardsOfOneRank(CardRank.ACE));
+    }
+
+    @Test
     public void toStringTest()
     {
-        String expected = "2 OF CLUBS\n"
-                        + "3 OF DIAMONDS\n"
-                        + "5 OF SPADES\n";
+        String expected = "TWO OF CLUBS\n"
+                        + "THREE OF DIAMONDS\n"
+                        + "FIVE OF SPADES\n"
+                        + "FIVE OF HEARTS\n";
         String actual = handOfCards.toString();
         Assert.assertEquals(expected, actual);
     }
