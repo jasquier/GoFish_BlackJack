@@ -8,7 +8,7 @@ import java.util.Collections;
  * @author John A. Squier
  * This class represents a deck of 52 playing cards.
  */
-public class DeckOfCards extends ArrayList<Card>
+public class DeckOfCards extends CardCollection
 {
     public DeckOfCards()
     {
@@ -16,37 +16,14 @@ public class DeckOfCards extends ArrayList<Card>
         fillCardDeckWith52Cards();
     }
 
-    public void shuffleDeck()
+    public void shuffle()
     {
         Collections.shuffle(this);
     }
 
-    public boolean equals(DeckOfCards other)
+    public CardCollection dealCards(int numCardsToDeal)
     {
-        boolean decksAreEqual = true;
-
-        if ( this.size() != other.size() )
-        {
-            decksAreEqual = false;
-            return decksAreEqual;
-        }
-        else
-        {
-            for ( int i = 0; i < this.size(); i++ )
-            {
-                if ( !this.get(i).equals(other.get(i)) )
-                {
-                    decksAreEqual = false;
-                }
-            }
-        }
-
-        return decksAreEqual;
-    }
-
-    public ArrayList<Card> dealCards(int numCardsToDeal)
-    {
-        ArrayList<Card> dealtCards = new ArrayList<>();
+        CardCollection dealtCards = new CardCollection();
 
         for ( int i = 0; i < numCardsToDeal; i++ )
         {
@@ -59,34 +36,6 @@ public class DeckOfCards extends ArrayList<Card>
         }
 
         return dealtCards;
-    }
-
-    // needs to be put in a cardcollection super class
-    public boolean removeCard(Card cardToRemove)
-    {
-        for ( Card c : this )
-        {
-            if ( c.equals(cardToRemove) ) // uses my equals method in card
-            {
-                this.remove(c);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public String toString()
-    {
-        String theDeck = "";
-
-        for ( int i = 0; i < this.size(); i++ )
-        {
-            theDeck += this.get(i).toString() + "\n";
-        }
-
-        return theDeck;
     }
 
     private void fillCardDeckWith52Cards()

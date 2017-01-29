@@ -10,7 +10,7 @@ public class GoFishGame extends CardGame
     int turnOfPlayer;
     private int[] numberOfPointsForPlayer;
     private DeckOfCards theDeck;
-    private HandOfCards[] players;
+    private HandOfCardsForGoFish[] players;
     private GoFishTurnInput guess;
     private GoFishAI ai;
     private GoFishIO io;
@@ -29,10 +29,10 @@ public class GoFishGame extends CardGame
 
         theDeck = new DeckOfCards();
 
-        players = new HandOfCards[numberOfPlayers];
+        players = new HandOfCardsForGoFish[numberOfPlayers];
         for ( int i = 0; i < players.length; i++ )
         {
-            players[i] = new HandOfCards();
+            players[i] = new HandOfCardsForGoFish();
         }
 
         ai = new BoGoFishAI(numberOfPlayers);
@@ -133,7 +133,7 @@ public class GoFishGame extends CardGame
 
     private void dealAGoFishGame()
     {
-        theDeck.shuffleDeck();
+        theDeck.shuffle();
 
         for ( int i = 0; i < numberOfPlayers; i++ )
         {
@@ -150,7 +150,7 @@ public class GoFishGame extends CardGame
         {
             for ( int j = 0; j < numberOfPlayers; j++ )
             {
-                if ( players[j].containsFourCardsOfOneRank(CardRank.values()[i]) )
+                if ( players[j].containsFourCardsOfSameRank(CardRank.values()[i]) )
                 {
                     players[j].removeAllCardsOfRank(CardRank.values()[i]);
                     numberOfPointsForPlayer[j]++;
